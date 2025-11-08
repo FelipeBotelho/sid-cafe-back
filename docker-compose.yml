@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # Banco de dados PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: sidcafe_postgres
+    environment:
+      POSTGRES_USER: sidcafe
+      POSTGRES_PASSWORD: sidcafe123
+      POSTGRES_DB: sidcafe
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sidcafe"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # PgAdmin para administração do banco (opcional)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: sidcafe_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@sidcafe.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8080:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local

@@ -1,0 +1,32 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Modelo de exemplo - Health Check
+model HealthCheck {
+  id        Int      @id @default(autoincrement())
+  status    String   @db.VarChar(50)
+  details   Json?
+  checkedAt DateTime @default(now()) @map("checked_at")
+
+  @@map("health_checks")
+}
+
+// Modelo de exemplo - Usuário (para referência futura)
+// model User {
+//   id        Int      @id @default(autoincrement())
+//   email     String   @unique
+//   name      String?
+//   createdAt DateTime @default(now()) @map("created_at")
+//   updatedAt DateTime @updatedAt @map("updated_at")
+//
+//   @@map("users")
+// }

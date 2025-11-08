@@ -1,5 +1,7 @@
+import 'dotenv/config';
 import express from 'express';
 import { config } from './config';
+import { db } from './database';
 import { 
   requestLogger, 
   securityHeaders, 
@@ -37,7 +39,7 @@ app.use(notFound);
 app.use(errorHandler);
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`🚀 Servidor rodando na porta ${PORT}`);
   console.log(`📍 http://localhost:${PORT}`);
   console.log(`🏥 Health Check: http://localhost:${PORT}/health`);
@@ -46,5 +48,19 @@ app.listen(PORT, () => {
   
   if (config.nodeEnv === 'development') {
     console.log('🔧 Modo desenvolvimento ativo');
+  }
+
+  // Testar conexão com banco de dados
+  console.log('🔌 Testando conexão com PostgreSQL...');
+  try {
+    const isConnected = await db.testConnection();
+    if (isConnected) {
+      console.log('✅ Conexão com PostgreSQL estabelecida com sucesso');
+    } else {
+      console.log('⚠️  Falha na conexão com PostgreSQL - Verifique se o banco está rodando');
+    }
+  } catch (error) {
+    console.log('❌ Erro ao conectar com PostgreSQL:', error instanceof Error ? error.message : 'Erro desconhecido');
+    console.log('💡 Execute "npm run db:start" para iniciar o banco de dados');
   }
 });

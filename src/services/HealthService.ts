@@ -1,5 +1,6 @@
 import { HealthStatus } from '../types';
 import { config } from '../config';
+import { db } from '../database';
 
 /**
  * Service para health checks do sistema
@@ -55,14 +56,36 @@ export class HealthService {
   }
 
   /**
-   * Check de conexão com banco de dados (placeholder)
+   * Check de conexão com banco de dados PostgreSQL (via Prisma)
    */
-  private async checkDatabase(): Promise<{ status: string; message: string }> {
-    // Implementar quando tiver banco de dados
-    return {
-      status: 'OK',
-      message: 'Database not configured'
-    };
+  private async checkDatabase(): Promise<{ status: string; message: string; details?: any }> {
+    try {
+      const isConnected = await db.testConnection();
+      
+      if (isConnected) {
+        const dbInfo = await db.getDatabaseInfo();
+        return {
+          status: 'OK',
+          message: 'PostgreSQL connected successfully via Prisma ORM',
+          details: {
+            database: dbInfo?.database_name || 'sidcafe',
+            version: dbInfo?.version?.split(' ')[0] || 'Unknown',
+            size_mb: dbInfo?.size_bytes ? Math.round(Number(dbInfo.size_bytes) / 1024 / 1024) : 'Unknown'
+          }
+        };
+      } else {
+        return {
+          status: 'ERROR',
+          message: 'Failed to connect to PostgreSQL'
+        };
+      }
+    } catch (error) {
+      return {
+        status: 'ERROR',
+        message: 'Database connection error',
+        details: error instanceof Error ? error.message : 'Unknown database error'
+      };
+    }
   }
 
   /**

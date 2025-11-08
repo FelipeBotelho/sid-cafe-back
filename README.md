@@ -1,11 +1,14 @@
 # API Node.js TypeScript Express
 
-Uma API REST moderna construída com Node.js, TypeScript e Express, seguindo arquitetura modular e boas práticas de desenvolvimento.
+Uma API REST moderna construída com Node.js, TypeScript, Express e Prisma ORM, seguindo arquitetura modular e boas práticas de desenvolvimento.
 
 ## 🚀 Características
 
 - **Node.js** com **TypeScript** para tipagem estática
 - **Express.js** para criação de APIs REST
+- **Prisma ORM** para gerenciamento do banco de dados
+- **PostgreSQL** como banco de dados
+- **Docker** para ambiente isolado
 - **Arquitetura Modular** com separação de responsabilidades
 - **Middleware customizados** para logging, validação e tratamento de erros
 - **Controllers organizados** com classe base reutilizável
@@ -65,12 +68,22 @@ backend/
    npm install
    ```
 
-2. **Executar em modo desenvolvimento:**
+2. **Iniciar o banco de dados PostgreSQL:**
+   ```bash
+   npm run db:start
+   ```
+
+3. **Executar migrations do Prisma:**
+   ```bash
+   npm run prisma:migrate
+   ```
+
+4. **Executar em modo desenvolvimento:**
    ```bash
    npm run dev
    ```
 
-3. **Acessar a API:**
+5. **Acessar a API:**
    - URL principal: http://localhost:3000
    - Health check: http://localhost:3000/health
    - Health detalhado: http://localhost:3000/health/detailed
@@ -172,12 +185,50 @@ As configurações ficam centralizadas em `src/config/index.ts`. Variáveis de a
 
 ### Produção
 - **express** - Framework web para Node.js
+- **@prisma/client** - Prisma ORM Client
+- **dotenv** - Gerenciamento de variáveis de ambiente
 
 ### Desenvolvimento
 - **typescript** - Linguagem TypeScript
 - **ts-node** - Execução direta de TypeScript
+- **prisma** - Prisma CLI
 - **@types/express** - Tipagens para Express
 - **@types/node** - Tipagens para Node.js
+
+## 🗄️ Banco de Dados
+
+### PostgreSQL com Docker
+O projeto usa PostgreSQL rodando em container Docker para facilitar o desenvolvimento.
+
+```bash
+# Iniciar banco
+npm run db:start
+
+# Parar banco
+npm run db:stop
+
+# Ver logs
+npm run db:logs
+
+# Interface PgAdmin
+npm run db:admin  # http://localhost:8080
+```
+
+### Prisma ORM
+ORM moderno para TypeScript com type-safety completo.
+
+```bash
+# Gerar Prisma Client
+npm run prisma:generate
+
+# Criar migration
+npm run prisma:migrate
+
+# Interface visual
+npm run prisma:studio  # http://localhost:5555
+```
+
+**Veja [DATABASE.md](./DATABASE.md) para documentação completa do banco de dados.**
 
 ## 🚀 Deploy
 
