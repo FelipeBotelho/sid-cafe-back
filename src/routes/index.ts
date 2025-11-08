@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { HealthController } from '../controllers';
 import healthRoutes from './health';
+import { authRoutes } from './auth';
+import { protectedRoutes } from './protected';
 
 const router = Router();
 const healthController = new HealthController();
@@ -10,6 +12,8 @@ router.get('/', healthController.welcome);
 
 // Module routes
 router.use('/', healthRoutes);
+router.use('/auth', authRoutes);
+router.use('/protected', protectedRoutes);
 
 // Example route for future use
 router.get('/example', (req, res) => {

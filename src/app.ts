@@ -1,5 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import { config } from './config';
 import { db } from './database';
 import { 
@@ -16,8 +18,20 @@ const PORT = config.port;
 // Trust proxy (para deployment em produção)
 app.set('trust proxy', 1);
 
+// CORS - IMPORTANTE: Deve vir ANTES dos outros middlewares
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3001',
+  credentials: true, // Permite envio de cookies
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Set-Cookie']
+}));
+
 // Middleware de segurança
 app.use(securityHeaders);
+
+// Cookie parser (antes do body parsing)
+app.use(cookieParser());
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));

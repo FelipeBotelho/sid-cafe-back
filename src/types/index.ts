@@ -40,3 +40,6 @@ export interface HealthStatus {
   version: string;
   environment: string;
 }
+
+// Export auth types
+export * from './auth';

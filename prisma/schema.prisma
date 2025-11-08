@@ -10,6 +10,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Modelo de usuário com autenticação
+model User {
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  name          String
+  password      String         // Hash bcrypt
+  isActive      Boolean        @default(true) @map("is_active")
+  role          UserRole       @default(USER)
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+  refreshTokens RefreshToken[]
+
+  @@map("users")
+}
+
+// Tipos de roles/permissões
+enum UserRole {
+  USER
+  ADMIN
+  MODERATOR
+}
+
+// Tokens de refresh para autenticação
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int      @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  isRevoked Boolean  @default(false) @map("is_revoked")
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
 // Modelo de exemplo - Health Check
 model HealthCheck {
   id        Int      @id @default(autoincrement())
@@ -19,14 +55,3 @@ model HealthCheck {
 
   @@map("health_checks")
 }
-
-// Modelo de exemplo - Usuário (para referência futura)
-// model User {
-//   id        Int      @id @default(autoincrement())
-//   email     String   @unique
-//   name      String?
-//   createdAt DateTime @default(now()) @map("created_at")
-//   updatedAt DateTime @updatedAt @map("updated_at")
-//
-//   @@map("users")
-// }
