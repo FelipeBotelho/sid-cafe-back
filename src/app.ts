@@ -4,6 +4,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { config } from './config';
 import { db } from './database';
+import { swaggerSpec, swaggerUi, swaggerUiOptions } from './config/swagger';
 import { 
   requestLogger, 
   securityHeaders, 
@@ -40,6 +41,9 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Request logging
 app.use(requestLogger);
 
+// Swagger Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerUiOptions));
+
 // API Routes
 app.use('/api/v1', routes);
 
@@ -56,6 +60,7 @@ app.use(errorHandler);
 app.listen(PORT, async () => {
   console.log(`🚀 Servidor rodando na porta ${PORT}`);
   console.log(`📍 http://localhost:${PORT}`);
+  console.log(`📚 Swagger UI: http://localhost:${PORT}/api-docs`);
   console.log(`🏥 Health Check: http://localhost:${PORT}/health`);
   console.log(`📊 Detailed Health: http://localhost:${PORT}/health/detailed`);
   console.log(`🌍 Ambiente: ${config.nodeEnv}`);

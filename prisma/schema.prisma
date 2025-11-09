@@ -58,11 +58,35 @@ model HealthCheck {
 
 // Modelo de categoria de produtos
 model Category {
-  id          Int      @id @default(autoincrement())
-  nome        String   @db.VarChar(100)
-  descricao   String?  @db.Text
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  id          Int       @id @default(autoincrement())
+  nome        String    @db.VarChar(100)
+  descricao   String?   @db.Text
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  
+  // Relacionamento com produtos
+  produtos    Product[]
 
   @@map("categories")
+}
+
+// Modelo de produto
+model Product {
+  id            Int       @id @default(autoincrement())
+  nome          String    @db.VarChar(150)
+  descricao     String?   @db.Text
+  preco         Decimal   @db.Decimal(10, 2) // Até 99.999.999,99
+  categoriaId   Int       @map("categoria_id")
+  estoqueAtual  Int       @default(0) @map("estoque_atual")
+  estoqueMinimo Int       @default(0) @map("estoque_minimo") // Para alertas
+  ativo         Boolean   @default(true) // Para soft delete
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  
+  // Relacionamento com categoria
+  categoria     Category  @relation(fields: [categoriaId], references: [id], onDelete: Restrict)
+
+  @@index([categoriaId])
+  @@index([ativo])
+  @@map("products")
 }

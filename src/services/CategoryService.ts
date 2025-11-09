@@ -63,6 +63,7 @@ export class CategoryService {
     } : {};
 
     // Construir ordenação
+    console.log(`[DEBUG Categories Input] orderBy: ${query.orderBy}, orderDir: ${query.orderDir}`);
     const orderBy = this.buildOrderBy(query.orderBy, query.orderDir);
 
     // Buscar categorias e contar total
@@ -185,12 +186,13 @@ export class CategoryService {
    * Construir ordenação para queries
    */
   private buildOrderBy(orderBy?: string, orderDir?: string) {
-    const field = orderBy === 'createdAt' || orderBy === 'updatedAt' || orderBy === 'nome' 
-      ? orderBy 
-      : 'nome';
+    // Validar campo
+    const validFields = ['nome', 'createdAt', 'updatedAt'];
+    const field = orderBy && validFields.includes(orderBy) ? orderBy : 'nome';
+    const direction = (orderDir === 'desc' ? 'desc' : 'asc') as 'asc' | 'desc';
     
-    const direction = orderDir === 'desc' ? 'desc' : 'asc';
-    
+    console.log(`[DEBUG Categories buildOrderBy] Input orderBy: ${orderBy}, orderDir: ${orderDir}, Final field: ${field}, direction: ${direction}`);
+        
     return { [field]: direction };
   }
 }

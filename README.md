@@ -13,6 +13,12 @@ Uma API REST moderna construída com Node.js, TypeScript, Express e Prisma ORM, 
 - **httpOnly Cookies** para refresh tokens (máxima segurança)
 - **Sistema de Roles** (USER, ADMIN, MODERATOR)
 - **Middlewares de autorização** para rotas protegidas
+- **API de Categorias** com CRUD completo
+- **API de Produtos** com gestão de estoque integrada
+- **Controle de acesso granular** (público vs admin)
+- **Busca e filtros avançados** para produtos e categorias
+- **Paginação automática** em todas as listagens
+- **Soft delete** para produtos (histórico preservado)
 - **Arquitetura Modular** com separação de responsabilidades
 - **Controllers organizados** com classe base reutilizável
 - **Services** para lógica de negócio
@@ -143,7 +149,23 @@ backend/
 - `PUT /categories/:id` - Atualizar categoria
 - `DELETE /categories/:id` - Deletar categoria
 
-**Veja [docs/AUTH.md](./docs/AUTH.md) para autenticação e [docs/CATEGORIES.md](./docs/CATEGORIES.md) para documentação completa das categorias.**
+### 🛒 Produtos
+
+**Públicos (sem autenticação):**
+- `GET /products` - Listar produtos com paginação, filtros e busca
+- `GET /products/:id` - Buscar produto por ID
+- `GET /products/category/:id` - Produtos por categoria
+- `GET /products/out-of-stock` - Produtos em falta
+- `GET /products/stats` - Estatísticas de produtos
+
+**Admin apenas (requer autenticação + role ADMIN):**
+- `POST /products` - Criar novo produto
+- `PUT /products/:id` - Atualizar produto
+- `DELETE /products/:id` - Desativar produto (soft delete)
+- `POST /products/:id/activate` - Reativar produto
+- `POST /products/:id/stock` - Gerenciar estoque (entrada/saída)
+
+**Veja [docs/AUTH.md](./docs/AUTH.md) para autenticação, [docs/CATEGORIES.md](./docs/CATEGORIES.md) para categorias e [docs/PRODUCTS.md](./docs/PRODUCTS.md) para documentação completa dos produtos.**
 
 ## 🏗️ Arquitetura
 
@@ -359,8 +381,8 @@ Para testar a API de autenticação:
 
 - **[docs/AUTH.md](./docs/AUTH.md)** - Sistema de autenticação completo
 - **[docs/CATEGORIES.md](./docs/CATEGORIES.md)** - API de categorias
-- **[docs/DATABASE.md](./docs/DATABASE.md)** - Configuração do banco de dados
-- **[docs/DATABASE.md](./docs/DATABASE.md)** - Banco de dados e Prisma ORM
+- **[docs/PRODUCTS.md](./docs/PRODUCTS.md)** - API de produtos e gestão de estoque
+- **[docs/DATABASE.md](./docs/DATABASE.md)** - Configuração do banco de dados e Prisma ORM
 - **[docs/FRONTEND_INTEGRATION.md](./docs/FRONTEND_INTEGRATION.md)** - Integração com frontend (httpOnly cookies)
 - **[docs/HTTPONLY_COOKIES.md](./docs/HTTPONLY_COOKIES.md)** - Guia de migração para cookies seguros
 - **[examples/](./examples/)** - Exemplos de código para integração

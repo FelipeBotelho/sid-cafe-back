@@ -4,6 +4,7 @@ import healthRoutes from './health';
 import { authRoutes } from './auth';
 import { protectedRoutes } from './protected';
 import { categoryRoutes } from './categories';
+import { productRoutes } from './products';
 
 const router = Router();
 const healthController = new HealthController();
@@ -16,6 +17,7 @@ router.use('/', healthRoutes);
 router.use('/auth', authRoutes);
 router.use('/protected', protectedRoutes);
 router.use('/categories', categoryRoutes);
+router.use('/products', productRoutes);
 
 // Example route for future use
 router.get('/example', (req, res) => {
