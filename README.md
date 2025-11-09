@@ -131,7 +131,19 @@ backend/
 - `GET /protected/admin` - Exemplo: rota protegida (apenas ADMIN)
 - `GET /protected/moderator` - Exemplo: rota protegida (ADMIN ou MODERATOR)
 
-**Veja [docs/AUTH.md](./docs/AUTH.md) para documentação completa da autenticação.**
+### 🗂️ Categorias
+
+**Públicos (sem autenticação):**
+- `GET /categories` - Listar categorias com paginação e busca
+- `GET /categories/:id` - Buscar categoria por ID  
+- `GET /categories/stats` - Estatísticas de categorias
+
+**Admin apenas (requer autenticação + role ADMIN):**
+- `POST /categories` - Criar nova categoria
+- `PUT /categories/:id` - Atualizar categoria
+- `DELETE /categories/:id` - Deletar categoria
+
+**Veja [docs/AUTH.md](./docs/AUTH.md) para autenticação e [docs/CATEGORIES.md](./docs/CATEGORIES.md) para documentação completa das categorias.**
 
 ## 🏗️ Arquitetura
 
@@ -346,6 +358,8 @@ Para testar a API de autenticação:
 ## 📚 Documentação
 
 - **[docs/AUTH.md](./docs/AUTH.md)** - Sistema de autenticação completo
+- **[docs/CATEGORIES.md](./docs/CATEGORIES.md)** - API de categorias
+- **[docs/DATABASE.md](./docs/DATABASE.md)** - Configuração do banco de dados
 - **[docs/DATABASE.md](./docs/DATABASE.md)** - Banco de dados e Prisma ORM
 - **[docs/FRONTEND_INTEGRATION.md](./docs/FRONTEND_INTEGRATION.md)** - Integração com frontend (httpOnly cookies)
 - **[docs/HTTPONLY_COOKIES.md](./docs/HTTPONLY_COOKIES.md)** - Guia de migração para cookies seguros

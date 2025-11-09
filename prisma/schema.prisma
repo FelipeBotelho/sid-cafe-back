@@ -55,3 +55,14 @@ model HealthCheck {
 
   @@map("health_checks")
 }
+
+// Modelo de categoria de produtos
+model Category {
+  id          Int      @id @default(autoincrement())
+  nome        String   @db.VarChar(100)
+  descricao   String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("categories")
+}
