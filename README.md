@@ -77,7 +77,6 @@ backend/
 - `npm run dev` - Executa a API em modo desenvolvimento com ts-node
 - `npm run build` - Compila TypeScript para JavaScript na pasta dist/
 - `npm start` - Executa a aplicação compilada
-- `npm run watch` - Compila TypeScript em modo watch
 
 ## 🏃‍♂️ Como Executar
 
@@ -257,11 +256,11 @@ npm run db:start
 # Parar banco
 npm run db:stop
 
-# Ver logs
-npm run db:logs
+# Ver logs (Docker direto)
+docker logs -f sidcafe-postgres
 
-# Interface PgAdmin
-npm run db:admin  # http://localhost:8080
+# Interface visual
+npm run prisma:studio  # http://localhost:5555
 ```
 
 ### Prisma ORM

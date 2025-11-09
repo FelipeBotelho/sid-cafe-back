@@ -24,16 +24,12 @@ npm run dev
 ### Banco de Dados (Docker)
 - `npm run db:start` - Inicia o PostgreSQL
 - `npm run db:stop` - Para o PostgreSQL
-- `npm run db:restart` - Reinicia o PostgreSQL
-- `npm run db:logs` - Ver logs do PostgreSQL
-- `npm run db:admin` - Inicia PgAdmin (interface web)
 - `npm run db:reset` - **CUIDADO!** Apaga tudo e recria
 
 ### Prisma ORM
 - `npm run prisma:generate` - Gera o Prisma Client
 - `npm run prisma:migrate` - Cria e aplica migrations
 - `npm run prisma:studio` - Abre interface visual do Prisma
-- `npm run prisma:push` - Sincroniza schema sem criar migration
 
 ## 🗄️ Informações de Conexão
 
@@ -45,10 +41,9 @@ npm run dev
 - **Senha:** sidcafe123
 - **URL:** `postgresql://sidcafe:sidcafe123@localhost:5432/sidcafe`
 
-### PgAdmin (Interface Web)
-- **URL:** http://localhost:8080
-- **Email:** admin@sidcafe.com
-- **Senha:** admin123
+### Interface Visual
+- **Prisma Studio:** `npm run prisma:studio` (http://localhost:5555)
+- **Conectar com DBeaver/PgAdmin:** Use as credenciais acima
 
 ## 📝 Como Criar um Novo Modelo
 
@@ -195,8 +190,8 @@ docker ps
 # Iniciar banco
 npm run db:start
 
-# Verificar logs
-npm run db:logs
+# Verificar logs (Docker direto)
+docker logs -f sidcafe-postgres
 ```
 
 ### Reset Completo do Banco
