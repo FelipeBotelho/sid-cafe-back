@@ -352,6 +352,7 @@ export class ProductController extends BaseController {
       nome: product.nome,
       descricao: product.descricao,
       preco: product.preco.toString(),
+      imagem: product.imagem,
       categoriaId: product.categoriaId,
       categoria: product.categoria ? {
         id: product.categoria.id,

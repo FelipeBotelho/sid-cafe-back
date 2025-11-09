@@ -333,6 +333,12 @@ const swaggerDefinition = {
             example: '4.50',
             description: 'Preço em formato decimal'
           },
+          imagem: {
+            type: 'string',
+            nullable: true,
+            example: 'https://exemplo.com/imagens/cafe-expresso.jpg',
+            description: 'URL da imagem do produto'
+          },
           categoriaId: {
             type: 'integer',
             example: 1
@@ -386,6 +392,11 @@ const swaggerDefinition = {
             example: 3.50,
             minimum: 0.01
           },
+          imagem: {
+            type: 'string',
+            example: 'https://exemplo.com/imagens/cafe-americano.jpg',
+            description: 'URL da imagem do produto'
+          },
           categoriaId: {
             type: 'integer',
             example: 1
@@ -401,6 +412,45 @@ const swaggerDefinition = {
             example: 15,
             minimum: 0,
             default: 0
+          }
+        }
+      },
+      UpdateProductRequest: {
+        type: 'object',
+        properties: {
+          nome: {
+            type: 'string',
+            example: 'Café Americano',
+            maxLength: 150
+          },
+          descricao: {
+            type: 'string',
+            example: 'Café suave e aromático'
+          },
+          preco: {
+            type: 'number',
+            format: 'double',
+            example: 3.50,
+            minimum: 0.01
+          },
+          imagem: {
+            type: 'string',
+            example: 'https://exemplo.com/imagens/cafe-americano.jpg',
+            description: 'URL da imagem do produto'
+          },
+          categoriaId: {
+            type: 'integer',
+            example: 1
+          },
+          estoqueMinimo: {
+            type: 'integer',
+            example: 15,
+            minimum: 0,
+            default: 0
+          },
+          ativo: {
+            type: 'boolean',
+            example: true
           }
         }
       },
@@ -423,6 +473,324 @@ const swaggerDefinition = {
             example: 'Compra de fornecedor'
           }
         }
+      },
+      
+      // Schemas de vendas
+      SaleItemRequest: {
+        type: 'object',
+        required: ['produtoId', 'quantidade'],
+        properties: {
+          produtoId: {
+            type: 'integer',
+            example: 1
+          },
+          quantidade: {
+            type: 'integer',
+            minimum: 1,
+            example: 2
+          },
+          precoUnitario: {
+            type: 'number',
+            format: 'double',
+            minimum: 0.01,
+            example: 4.50,
+            description: 'Preço unitário (opcional, usa o preço do produto se não informado)'
+          }
+        }
+      },
+      CreateSaleRequest: {
+        type: 'object',
+        required: ['clienteId', 'itens'],
+        properties: {
+          clienteId: {
+            type: 'integer',
+            example: 1
+          },
+          itens: {
+            type: 'array',
+            items: {
+              $ref: '#/components/schemas/SaleItemRequest'
+            },
+            minItems: 1
+          },
+          desconto: {
+            type: 'number',
+            format: 'double',
+            minimum: 0,
+            example: 5.00,
+            description: 'Valor do desconto'
+          },
+          observacoes: {
+            type: 'string',
+            example: 'Venda com desconto promocional'
+          }
+        }
+      },
+      UpdateSaleRequest: {
+        type: 'object',
+        properties: {
+          status: {
+            type: 'string',
+            enum: ['PENDING', 'CONFIRMED', 'CANCELLED', 'COMPLETED'],
+            example: 'CONFIRMED'
+          },
+          desconto: {
+            type: 'number',
+            format: 'double',
+            minimum: 0,
+            example: 10.00
+          },
+          observacoes: {
+            type: 'string',
+            example: 'Venda confirmada pelo cliente'
+          }
+        }
+      },
+      SaleItemResponse: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'integer',
+            example: 1
+          },
+          produtoId: {
+            type: 'integer',
+            example: 1
+          },
+          produto: {
+            type: 'object',
+            properties: {
+              id: {
+                type: 'integer',
+                example: 1
+              },
+              nome: {
+                type: 'string',
+                example: 'Café Expresso'
+              },
+              descricao: {
+                type: 'string',
+                example: 'Café forte e encorpado'
+              },
+              precoAtual: {
+                type: 'string',
+                example: '4.50',
+                description: 'Preço atual do produto'
+              }
+            }
+          },
+          quantidade: {
+            type: 'integer',
+            example: 2
+          },
+          precoUnitario: {
+            type: 'string',
+            example: '4.50',
+            description: 'Preço no momento da venda'
+          },
+          valorTotal: {
+            type: 'string',
+            example: '9.00'
+          }
+        }
+      },
+      SaleResponse: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'integer',
+            example: 1
+          },
+          clienteId: {
+            type: 'integer',
+            example: 1
+          },
+          cliente: {
+            type: 'object',
+            properties: {
+              id: {
+                type: 'integer',
+                example: 1
+              },
+              name: {
+                type: 'string',
+                example: 'João Silva'
+              },
+              email: {
+                type: 'string',
+                example: 'joao@email.com'
+              }
+            }
+          },
+          itens: {
+            type: 'array',
+            items: {
+              $ref: '#/components/schemas/SaleItemResponse'
+            }
+          },
+          valorTotal: {
+            type: 'string',
+            example: '50.00'
+          },
+          desconto: {
+            type: 'string',
+            example: '5.00'
+          },
+          valorFinal: {
+            type: 'string',
+            example: '45.00'
+          },
+          status: {
+            type: 'string',
+            enum: ['PENDING', 'CONFIRMED', 'CANCELLED', 'COMPLETED'],
+            example: 'CONFIRMED'
+          },
+          observacoes: {
+            type: 'string',
+            nullable: true,
+            example: 'Venda com desconto promocional'
+          },
+          dataVenda: {
+            type: 'string',
+            format: 'date-time',
+            example: '2025-11-09T14:30:00.000Z'
+          },
+          createdAt: {
+            type: 'string',
+            format: 'date-time'
+          },
+          updatedAt: {
+            type: 'string',
+            format: 'date-time'
+          }
+        }
+      },
+      SaleListResponse: {
+        type: 'object',
+        properties: {
+          sales: {
+            type: 'array',
+            items: {
+              $ref: '#/components/schemas/SaleResponse'
+            }
+          },
+          pagination: {
+            $ref: '#/components/schemas/Pagination'
+          },
+          filters: {
+            type: 'object',
+            properties: {
+              clienteId: {
+                type: 'integer',
+                example: 1
+              },
+              status: {
+                type: 'string',
+                enum: ['PENDING', 'CONFIRMED', 'CANCELLED', 'COMPLETED']
+              },
+              dataInicio: {
+                type: 'string',
+                format: 'date'
+              },
+              dataFim: {
+                type: 'string',
+                format: 'date'
+              },
+              valorMin: {
+                type: 'number'
+              },
+              valorMax: {
+                type: 'number'
+              }
+            }
+          }
+        }
+      },
+      SaleStatsResponse: {
+        type: 'object',
+        properties: {
+          totalVendas: {
+            type: 'integer',
+            example: 150
+          },
+          totalFaturamento: {
+            type: 'string',
+            example: '15750.50'
+          },
+          vendasHoje: {
+            type: 'integer',
+            example: 8
+          },
+          faturamentoHoje: {
+            type: 'string',
+            example: '420.00'
+          },
+          vendasMes: {
+            type: 'integer',
+            example: 45
+          },
+          faturamentoMes: {
+            type: 'string',
+            example: '3250.75'
+          },
+          statusDistribution: {
+            type: 'object',
+            properties: {
+              PENDING: {
+                type: 'integer',
+                example: 5
+              },
+              CONFIRMED: {
+                type: 'integer',
+                example: 100
+              },
+              CANCELLED: {
+                type: 'integer',
+                example: 10
+              },
+              COMPLETED: {
+                type: 'integer',
+                example: 35
+              }
+            }
+          },
+          produtoMaisVendido: {
+            type: 'object',
+            nullable: true,
+            properties: {
+              id: {
+                type: 'integer',
+                example: 1
+              },
+              nome: {
+                type: 'string',
+                example: 'Café Expresso'
+              },
+              quantidadeVendida: {
+                type: 'integer',
+                example: 127
+              }
+            }
+          },
+          clienteTopFaturamento: {
+            type: 'object',
+            nullable: true,
+            properties: {
+              id: {
+                type: 'integer',
+                example: 1
+              },
+              name: {
+                type: 'string',
+                example: 'João Silva'
+              },
+              totalCompras: {
+                type: 'string',
+                example: '1250.75'
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -438,6 +806,10 @@ const swaggerDefinition = {
     {
       name: 'Products',
       description: 'Gestão de produtos e controle de estoque'
+    },
+    {
+      name: 'Sales',
+      description: 'Sistema de vendas e faturamento'
     },
     {
       name: 'Health',

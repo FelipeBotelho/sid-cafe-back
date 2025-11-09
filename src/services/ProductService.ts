@@ -49,6 +49,7 @@ export class ProductService {
         nome: data.nome.trim(),
         descricao: data.descricao?.trim() || null,
         preco: new Decimal(data.preco),
+        imagem: data.imagem?.trim() || null,
         categoriaId: data.categoriaId,
         estoqueAtual: data.estoqueAtual || 0,
         estoqueMinimo: data.estoqueMinimo || 0
@@ -258,6 +259,9 @@ export class ProductService {
           descricao: data.descricao?.trim() || null 
         }),
         ...(data.preco !== undefined && { preco: new Decimal(data.preco) }),
+        ...(data.imagem !== undefined && { 
+          imagem: data.imagem?.trim() || null 
+        }),
         ...(data.categoriaId && { categoriaId: data.categoriaId }),
         ...(data.estoqueMinimo !== undefined && { estoqueMinimo: data.estoqueMinimo }),
         ...(data.ativo !== undefined && { ativo: data.ativo })

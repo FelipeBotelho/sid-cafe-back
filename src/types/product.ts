@@ -9,6 +9,7 @@ export interface Product {
   nome: string;
   descricao: string | null;
   preco: Decimal;
+  imagem: string | null;
   categoriaId: number;
   estoqueAtual: number;
   estoqueMinimo: number;
@@ -29,6 +30,7 @@ export interface CreateProductDto {
   nome: string;
   descricao?: string;
   preco: number;
+  imagem?: string;
   categoriaId: number;
   estoqueAtual?: number;
   estoqueMinimo?: number;
@@ -38,6 +40,7 @@ export interface UpdateProductDto {
   nome?: string;
   descricao?: string;
   preco?: number;
+  imagem?: string;
   categoriaId?: number;
   estoqueMinimo?: number;
   ativo?: boolean;
@@ -54,6 +57,7 @@ export interface ProductResponse {
   nome: string;
   descricao: string | null;
   preco: string; // String para evitar problemas com Decimal no JSON
+  imagem: string | null;
   categoriaId: number;
   categoria?: {
     id: number;
